@@ -56,17 +56,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
-      - name: Notify Discord
+      - name: Notify Discord Success
         uses: rjstone/discord-webhook-notify@v1
         if: ${{ success() }}
         with:
           severity: info
           details: Deployed and tagged a new version!
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK.url }}
-      - name: Notify Discord
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK.url }}
+      - name: Notify Discord Failure
         uses: rjstone/discord-webhook-notify@v1
         if: ${{ failure() }}
         with:
           severity: error
           details: Failed to deploy and tag a new version!
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK.url }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK.url }}
