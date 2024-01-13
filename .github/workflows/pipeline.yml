@@ -33,6 +33,13 @@ jobs:
           command: npm run test:e2e
           start: npm run start-prod
           wait-on: http://localhost:4000
+      - name: Notify Discord Failure
+        uses: rjstone/discord-webhook-notify@v1
+        if: ${{ failure() }}
+        with:
+          severity: error
+          details: Failed to build, lint or test. No new version deployed!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
     
   deploy:
     if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, '#skip') }}
@@ -62,11 +69,4 @@ jobs:
         with:
           severity: info
           details: Deployed and tagged a new version!
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      - name: Notify Discord Failure
-        uses: rjstone/discord-webhook-notify@v1
-        if: ${{ failure() }}
-        with:
-          severity: error
-          details: Failed to deploy and tag a new version!
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
