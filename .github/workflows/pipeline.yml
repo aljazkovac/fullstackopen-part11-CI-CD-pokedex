@@ -59,7 +59,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - uses: anothrNick/github-tag-action@a2c70ae13a881faf2b4953baaa9e49731997ab36
+      - name: Create tag
+        id: create_tag
+        uses: anothrNick/github-tag-action@a2c70ae13a881faf2b4953baaa9e49731997ab36
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
@@ -68,5 +70,5 @@ jobs:
         if: ${{ success() }}
         with:
           severity: info
-          details: Deployed and tagged a new version!
+          details: "Deployed and tagged a new version: ${{ steps.create_tag.outputs.new_tag }}"
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
